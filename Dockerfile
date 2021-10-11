@@ -1,8 +1,7 @@
-FROM ubuntu:20.04 AS deps
+FROM ubuntu:20.04
 
 SHELL ["/bin/bash", "-c"]
-ENV PKG_DEPS python3 python3-venv
-ENV VENV /p4runtime-sh/venv
+ENV PKG_DEPS python3 python3-pip git
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends $PKG_DEPS && \
@@ -11,28 +10,19 @@ RUN apt-get update && \
 COPY . /p4runtime-sh/
 WORKDIR /p4runtime-sh/
 
-RUN python3 -m venv $VENV && \
-    source $VENV/bin/activate && \
-    pip3 install --upgrade pip && \
-    pip3 install --upgrade setuptools && \
-    python3 setup.py install && \
-    rm -rf ~/.cache/pip
+RUN pip3 install --upgrade pip && \
+    pip3 install --upgrade setuptools
 
-FROM ubuntu:20.04
-LABEL maintainer="Antonin Bas <antonin@barefootnetworks.com>"
-LABEL description="A shell based on ipython3 for P4Runtime"
+# install latests p4runtime proto
+RUN cd /tmp && git clone https://github.com/p4lang/p4runtime && \
+    cd p4runtime/py && python3 setup.py install && \
+    cd - && \
+    rm -fr p4runtime
 
-# Any easy way to avoid installing these packages again?
-ENV PKG_DEPS python3
-ENV VENV /p4runtime-sh/venv
+RUN python3 setup.py install
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends $PKG_DEPS && \
-    rm -rf /var/cache/apt/* /var/lib/apt/lists/*
+RUN mkdir /user-data/
 
-COPY --from=deps /p4runtime-sh/venv /p4runtime-sh/venv
-COPY --from=deps /p4runtime-sh/docker_entry_point.sh /p4runtime-sh/docker_entry_point.sh
+WORKDIR /user-data/
 
-WORKDIR /p4runtime-sh
-
-ENTRYPOINT ["/p4runtime-sh/docker_entry_point.sh"]
+ENTRYPOINT ["bash"]

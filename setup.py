@@ -13,7 +13,6 @@ setup(
         "ipython==7.19.0",
         "protobuf==3.14.0",
         "grpcio==1.35.0",
-        "p4runtime==1.3.0",
     ],
     author = "P4 API Working Group",
     author_email = "p4-api@lists.p4.org",
@@ -26,5 +25,4 @@ setup(
     long_description = open(project_root + "/README.md").read(),
     long_description_content_type = "text/markdown",
     license = "Apache-2.0",
-    url = "https://github.com/p4lang/p4runtime-shell"
 )

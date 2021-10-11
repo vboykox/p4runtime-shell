@@ -2587,8 +2587,9 @@ def setup(device_id=1, grpc_addr='localhost:9559', election_id=(1, 0), role_name
             logging.critical(e)
             client.tear_down()
             sys.exit(1)
-        except Exception:
+        except Exception as e:
             logging.critical("Error when setting config")
+            logging.critical(e)
             client.tear_down()
             sys.exit(1)
 
