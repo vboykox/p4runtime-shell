@@ -51,7 +51,7 @@ config files in the docker if needed):
 [sudo] ./p4runtime-sh-docker --grpc-addr <server IP>:<server port> \
   --device-id 0 --election-id 0,1 \
   --config <path to p4info>,<path to binary config> \
-  --role-name <Role name for client>
+  --role-name <role name for client>
 ```
 
 *If you are a Linux user, you can follow this
