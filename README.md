@@ -50,7 +50,8 @@ config files in the docker if needed):
 ```bash
 [sudo] ./p4runtime-sh-docker --grpc-addr <server IP>:<server port> \
   --device-id 0 --election-id 0,1 \
-  --config <path to p4info>,<path to binary config>
+  --config <path to p4info>,<path to binary config> \
+  --role-name <Role name for client>
 ```
 
 *If you are a Linux user, you can follow this
@@ -328,7 +329,8 @@ sh.setup(
     device_id=1,
     grpc_addr='localhost:9559',
     election_id=(0, 1), # (high, low)
-    config=sh.FwdPipeConfig('config/p4info.pb.txt', 'config/device_config.bin')
+    config=sh.FwdPipeConfig('config/p4info.pb.txt', 'config/device_config.bin'),
+    role_name="controller_1"
 )
 
 # see p4runtime_sh/test.py for more examples
